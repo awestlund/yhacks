@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var scoresRouter = require('./routes/scores');
+var scoresRouter = require('./routes/smartcar');
 
 const mongoose = require('mongoose');
 const mongo_url = 'mongodb://localhost:27017/example';

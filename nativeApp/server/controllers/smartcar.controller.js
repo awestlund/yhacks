@@ -12,7 +12,7 @@ const client = new smartcar.AuthClient({
     testMode: true
 });
 
-exports.get = (req, res, next)=>{
+exports.getUser = (req, res, next)=>{
     const authUrl = client.getAuthUrl({forcePrompt: true});
     res.send(`
       <h1>Hello, World!</h1>
@@ -20,15 +20,16 @@ exports.get = (req, res, next)=>{
         <button>Connect Car</button>
       </a>
     `);
-
-    // let q = Smartcar.find();
-    // q.exec((err, Smartcars)=>{
-    //   if(err){
-    //     return res.status(500).send(err);
-    //   }
-    //   console.log("here"+ Smartcars);
-    //   res.send(Smartcars);
-    // });
+}
+exports.get = (req, res, next)=>{
+    let q = Smartcar.find();
+    q.exec((err, Smartcars)=>{
+      if(err){
+        return res.status(500).send(err);
+      }
+      console.log("here"+ Smartcars);
+      res.send(Smartcars);
+    });
 }
 
 exports.add = (req, res, next)=>{
