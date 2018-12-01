@@ -1,5 +1,6 @@
 const Smartcar = require('../models/smartcar.model');
 const smartcar = require('smartcar');
+var cookieParser = require('cookie-parser');
 const CLIENT_ID = '14d850b9-3652-4765-897e-ffed1716cc54';
 const CLIENT_SECRET = 'c431ca8e-352f-47a9-836b-e5ce98896b33';
 
@@ -32,7 +33,8 @@ exports.get = (req, res, next)=>{
     });
 }
 exports.getAccessToken = (req, res, next)=>{
-    let token = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {accessToken: 1, _id:0});
+    var cookie = req.cookies.userID;
+    let token = Smartcar.find({userID: cookie}, {accessToken: 1, _id:0});
     //token = Smartcars.accessToken;
     console.log("here1 "+ token);
     token.exec((err, Smartcars)=>{
@@ -118,6 +120,8 @@ exports.add = (req, res, next)=>{
         })
         .then(function(userID){
             newuser.userID = userID;
+            res.cookie('userID', userID);
+            // console.log('new cookie: ',cookie);
             let newSmartcar = new Smartcar(newuser);
 
             newSmartcar.save(err=>{
