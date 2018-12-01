@@ -16,6 +16,7 @@ const db = mongoose.connection;
 db.on('err', console.log.bind(console, 'mongo connection error'));
 
 var app = express();
+app.use(cookieParser());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
