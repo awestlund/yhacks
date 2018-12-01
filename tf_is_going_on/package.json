@@ -1,0 +1,11 @@
+{
+  "name": "getting-started",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "smartcar": "^4.2.1"
+  },
+  "author": "Smartcar",
+  "license": "MIT"
+}

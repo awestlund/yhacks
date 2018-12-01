@@ -36,12 +36,24 @@ app.get('/callback', function(req, res, next) {
   client.exchangeCode(code)
     .then(function(access) {
       // get all vehicles
-      // save info to db
       // Log the access token response
       console.log(JSON.stringify(access, null, 2));
+      // get accessToken string
+      var accessToken = JSON.stringify(access.accessToken);
+      console.log(accessToken);
 
+      // smartcar.getVehicleIds(accessToken)
+      //   .then(function(response) {
+      //     const vid = response.vehicles[0];
+      //     const vehicle = new smartcar.Vehicle(vid, accessToken);
+      //     return vehicle.location();
+      //   })
+      //   .then(function(response) {
+      //     console.log(response);
+      //   });
+      // save info to db
       // Respond with a success status to browser
-      res.json(access);
+      res.send(accessToken);
 
     });
 });
