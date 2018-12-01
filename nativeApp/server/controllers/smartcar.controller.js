@@ -126,9 +126,12 @@ exports.add = (req, res, next)=>{
             newSmartcar.save(err=>{
                 if(err) return res.status(500).send(err);
                 res.send('nice job kiddo');
-
             })
             // res.send('nice job kiddo2');
 
         });
+}
+
+exports.test =(req, res, next)=>{
+    console.log(JSON.stringify(res))
 }
