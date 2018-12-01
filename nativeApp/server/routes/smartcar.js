@@ -10,6 +10,8 @@ router.get('/User', smartcar_controller.getUser);
 //prints out all of the db entries
 router.get('/db', smartcar_controller.get);
 
+router.get('/test', smartcar_controller.test);
+
 //saves a new user into the database
 router.get('/callback', smartcar_controller.add);
 
