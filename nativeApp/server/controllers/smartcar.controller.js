@@ -43,14 +43,34 @@ exports.getAccessToken = (req, res, next)=>{
       res.send(Smartcars[0].accessToken);
     });
 }
-exports.getLocation = (req, res, next)=>{
-    let token = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {Location: 1, _id:0});
-    token.exec((err, Smartcars)=>{
+exports.getVehicleInfo = (req, res, next)=>{
+    let info = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {vehicleInfo: 1, _id:0});
+    info.exec((err, Smartcars)=>{
       if(err){
         return res.status(500).send(err);
       }
       console.log("here"+ Smartcars);
-      res.send(Smartcars); //this will be an array
+      res.send(Smartcars[0].vehicleInfo);
+    });
+}
+exports.getVehicleIDs = (req, res, next)=>{
+    let ids = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {vehicleIDs: 1, _id:0});
+    ids.exec((err, Smartcars)=>{
+      if(err){
+        return res.status(500).send(err);
+      }
+      console.log("here"+ Smartcars);
+      res.send(Smartcars[0].vehicleIDs);
+    });
+}
+exports.getLocation = (req, res, next)=>{
+    let location = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {Location: 1, _id:0});
+    location.exec((err, Smartcars)=>{
+      if(err){
+        return res.status(500).send(err);
+      }
+      console.log("here"+ Smartcars);
+      res.send(Smartcars[0].location); //this will be an array, change how we pass this
     });
 }
 exports.updateLocation = (req, res, next)=>{
