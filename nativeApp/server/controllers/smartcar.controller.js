@@ -81,24 +81,44 @@ exports.getLocation = (req, res, next)=>{
 exports.updateLocation = (req, res, next)=>{
     var cookie = req.cookies.userID;
     let token = Smartcar.find({userID: cookie}, {accessToken: 1, _id:0});
-    
-    smartcar.getVehicleIds(token)
-        .then(function(response) {
-            const vid = response.vehicles[0];
-            const vehicle = new smartcar.Vehicle(vid, accessToken);
-            return vehicle.location();
-        })
-        .then(function(response) {
-            console.log(response);
-        });
-    let q = Smartcar.update();
-    q.exec((err, Smartcars)=>{
+    //token = Smartcars.accessToken;
+    console.log("here1 "+ token);
+    token.exec((err, Smartcars)=>{
       if(err){
         return res.status(500).send(err);
       }
       console.log("here"+ Smartcars);
-    res.send(200);
+      var token2 = Smartcars[0].accessToken;
+      console.log(token2);
+      // above here works now 
+
+      smartcar.getVehicleIds(token2)
+        .then(function(response) {
+            const vid = response.vehicles[0];
+            const vehicle = new smartcar.Vehicle(vid, token2);
+            return vehicle.location();
+        })
+        .then(function(response) {
+            console.log(response);
+            let q = Smartcar.update({userID: cookie}, {$set: {location: response}}, {multi: true});
+            q.exec((err, Smartcars)=>{
+                if(err){
+                    return res.status(500).send(err);
+                }
+                console.log("here"+ Smartcars);
+                res.send(200);
+            })
+        });
     });
+    // db.collectionName.update({“first_name”: “Prashant”}, {$set: {“sir_name”: “Patil”}}, {multi: true})
+    // let q = Smartcar.update({userID: cookie}, {$set: {location: response}}, {multi: true});
+    // q.exec((err, Smartcars)=>{
+    //   if(err){
+    //     return res.status(500).send(err);
+    //   }
+    //   console.log("here"+ Smartcars);
+    // res.send(200);
+    // });
 }
 exports.add = (req, res, next)=>{
     const code = req.query.code;
@@ -109,7 +129,7 @@ exports.add = (req, res, next)=>{
         // get accessToken string
         newuser.accessToken = access.accessToken;
         console.log(newuser.accessToken);
-
+        
         return smartcar.getVehicleIds(newuser.accessToken);
 
         })
@@ -118,17 +138,27 @@ exports.add = (req, res, next)=>{
             return smartcar.getUserId(newuser.accessToken);
         })
         .then(function(userID){
-            newuser.userID = userID;
-            res.cookie('userID', userID);
-            // console.log('new cookie: ',cookie);
-            let newSmartcar = new Smartcar(newuser);
+            var recurUser = Smartcar.find({userID: userID},{_id:1});
+            if(recurUser != null){
+                // update access code here
+                let q = Smartcar.update({userID: userID}, {$set: {accessToken: newuser.accessToken}}, {multi: true});
+                q.exec((err, Smartcars)=>{
+                    if(err){
+                        return res.status(500).send(err);
+                    }
+                    console.log("updated accessToken"+ Smartcars);
+                    res.send("updated accessToken");
+                })
+            }
+            else{
+                newuser.userID = userID;
+                let newSmartcar = new Smartcar(newuser);
+                newSmartcar.save(err=>{
+                    if(err) return res.status(500).send(err);
+                    res.send('nice job kiddo');
 
-            newSmartcar.save(err=>{
-                if(err) return res.status(500).send(err);
-                res.send('nice job kiddo');
-
-            })
-            // res.send('nice job kiddo2');
+                })
+            }
 
         });
 }
