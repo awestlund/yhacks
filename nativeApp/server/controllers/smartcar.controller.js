@@ -79,14 +79,10 @@ exports.getLocation = (req, res, next)=>{
     });
 }
 exports.updateLocation = (req, res, next)=>{
-<<<<<<< Updated upstream
     var cookie = req.cookies.userID;
-    // ist this right? how do we get the accesstoken?
-=======
-    let token = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {accessToken: 1, _id:0});
-
->>>>>>> Stashed changes
-    smartcar.getVehicleIds(accessToken)
+    let token = Smartcar.find({userID: cookie}, {accessToken: 1, _id:0});
+    
+    smartcar.getVehicleIds(token)
         .then(function(response) {
             const vid = response.vehicles[0];
             const vehicle = new smartcar.Vehicle(vid, accessToken);
@@ -101,13 +97,7 @@ exports.updateLocation = (req, res, next)=>{
         return res.status(500).send(err);
       }
       console.log("here"+ Smartcars);
-    //   res.send(Smartcars);
-    })
-    .then(function(){
-        Smartcar.save(err=>{
-            if(err) return res.status(500).send(err);
-            res.send('nice job kiddo');
-        })
+    res.send(200);
     });
 }
 exports.add = (req, res, next)=>{
