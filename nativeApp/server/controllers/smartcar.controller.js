@@ -133,5 +133,6 @@ exports.add = (req, res, next)=>{
 }
 
 exports.test =(req, res, next)=>{
-    console.log(JSON.stringify(res))
+    console.log(req.query.name);
+    res.send({test:5})
 }
