@@ -33,12 +33,24 @@ exports.get = (req, res, next)=>{
 }
 exports.getAccessToken = (req, res, next)=>{
     let token = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {accessToken: 1, _id:0});
+    //token = Smartcars.accessToken;
+    console.log("here1 "+ token);
     token.exec((err, Smartcars)=>{
       if(err){
         return res.status(500).send(err);
       }
       console.log("here"+ Smartcars);
-      res.send(Smartcars);
+      res.send(Smartcars[0].accessToken);
+    });
+}
+exports.getLocation = (req, res, next)=>{
+    let token = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {Location: 1, _id:0});
+    token.exec((err, Smartcars)=>{
+      if(err){
+        return res.status(500).send(err);
+      }
+      console.log("here"+ Smartcars);
+      res.send(Smartcars); //this will be an array
     });
 }
 exports.updateLocation = (req, res, next)=>{
