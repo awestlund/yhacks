@@ -31,14 +31,37 @@ exports.get = (req, res, next)=>{
       res.send(Smartcars);
     });
 }
-
+exports.getAccessToken = (req, res, next)=>{
+    let token = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {accessToken: 1, _id:0});
+    token.exec((err, Smartcars)=>{
+      if(err){
+        return res.status(500).send(err);
+      }
+      console.log("here"+ Smartcars);
+      res.send(Smartcars);
+    });
+}
+exports.updateLocation = (req, res, next)=>{
+    let q = Smartcar.update();
+    q.exec((err, Smartcars)=>{
+      if(err){
+        return res.status(500).send(err);
+      }
+      console.log("here"+ Smartcars);
+    //   res.send(Smartcars);
+    })
+    .then(function(){
+        Smartcar.save(err=>{
+            if(err) return res.status(500).send(err);
+            res.send('nice job kiddo');
+        })
+    });
+}
 exports.add = (req, res, next)=>{
     const code = req.query.code;
     const newuser = {};
     client.exchangeCode(code)
         .then(function(access) {
-        // get all vehicles
-        // Log the access token response
         console.log(JSON.stringify(access, null, 2));
         // get accessToken string
         newuser.accessToken = access.accessToken;
