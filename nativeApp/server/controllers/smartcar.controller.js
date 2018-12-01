@@ -139,26 +139,34 @@ exports.add = (req, res, next)=>{
         })
         .then(function(userID){
             var recurUser = Smartcar.find({userID: userID},{_id:1});
-            if(recurUser != null){
-                // update access code here
-                let q = Smartcar.update({userID: userID}, {$set: {accessToken: newuser.accessToken}}, {multi: true});
-                q.exec((err, Smartcars)=>{
-                    if(err){
-                        return res.status(500).send(err);
-                    }
-                    console.log("updated accessToken"+ Smartcars);
-                    res.send("updated accessToken");
-                })
-            }
-            else{
-                newuser.userID = userID;
-                let newSmartcar = new Smartcar(newuser);
-                newSmartcar.save(err=>{
-                    if(err) return res.status(500).send(err);
-                    res.send('nice job kiddo');
-
-                })
-            }
+            recurUser.exec((err, Smartcars)=>{
+                if(err){
+                  return res.status(500).send(err);
+                }
+                console.log("69" + Smartcars);
+                //var user = Smartcars[0]._id; //this will be an array, change how we pass this
+                
+                if(Smartcars && Smartcars.length > 0){
+                    // update access code here
+                    let q = Smartcar.update({userID: userID}, {$set: {accessToken: newuser.accessToken}}, {multi: true});
+                    q.exec((err, Smartcars)=>{
+                        if(err){
+                            return res.status(500).send(err);
+                        }
+                        console.log("updated accessToken"+ Smartcars);
+                        res.send("updated accessToken");
+                    })
+                }
+                else{
+                    newuser.userID = userID;
+                    let newSmartcar = new Smartcar(newuser);
+                    newSmartcar.save(err=>{
+                        if(err) return res.status(500).send(err);
+                        res.send('nice job kiddo');
+    
+                    })
+                }
+              })
 
         });
 }
