@@ -44,11 +44,16 @@ app.get('/callback', function(req, res, next) {
 
       smartcar.getVehicleIds(accessToken)
         .then(function(response) {
+          // save all vehicles to db
           const vid = response.vehicles[0];
+
+          // -----
+
           const vehicle = new smartcar.Vehicle(vid, accessToken);
           return vehicle.location();
         })
         .then(function(response) {
+          // log to db
           console.log(response);
         });
       // save info to db
