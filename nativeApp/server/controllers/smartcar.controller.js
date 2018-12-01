@@ -46,7 +46,8 @@ exports.getAccessToken = (req, res, next)=>{
     });
 }
 exports.getVehicleInfo = (req, res, next)=>{
-    let info = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {vehicleInfo: 1, _id:0});
+    var cookie = req.cookies.userID;
+    let info = Smartcar.find({userID: cookie}, {vehicleInfo: 1, _id:0});
     info.exec((err, Smartcars)=>{
       if(err){
         return res.status(500).send(err);
@@ -56,7 +57,8 @@ exports.getVehicleInfo = (req, res, next)=>{
     });
 }
 exports.getVehicleIDs = (req, res, next)=>{
-    let ids = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {vehicleIDs: 1, _id:0});
+    var cookie = req.cookies.userID;
+    let ids = Smartcar.find({userID: cookie}, {vehicleIDs: 1, _id:0});
     ids.exec((err, Smartcars)=>{
       if(err){
         return res.status(500).send(err);
@@ -66,7 +68,8 @@ exports.getVehicleIDs = (req, res, next)=>{
     });
 }
 exports.getLocation = (req, res, next)=>{
-    let location = Smartcar.find({userID: "d78b772e-186c-4d02-bd7d-2aa7400cab0c"}, {Location: 1, _id:0});
+    var cookie = req.cookies.userID;
+    let location = Smartcar.find({userID: cookie}, {Location: 1, _id:0});
     location.exec((err, Smartcars)=>{
       if(err){
         return res.status(500).send(err);
@@ -76,6 +79,7 @@ exports.getLocation = (req, res, next)=>{
     });
 }
 exports.updateLocation = (req, res, next)=>{
+    var cookie = req.cookies.userID;
     // ist this right? how do we get the accesstoken?
     smartcar.getVehicleIds(accessToken)
         .then(function(response) {
