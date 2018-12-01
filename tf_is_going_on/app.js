@@ -1,10 +1,29 @@
+const smartcar = require('smartcar');
+const express = require('express');
+app = express();
+
 'use strict';
 
 const CLIENT_ID = '14d850b9-3652-4765-897e-ffed1716cc54';
 const CLIENT_SECRET = 'c431ca8e-352f-47a9-836b-e5ce98896b33';
 
-const smartcar = require('smartcar');
-const express = require('express');
+//program logic
+
+function executeStartParkActions(req,res,next){
+    const {vehicles} = await smartcar.getVehicleIds(req.token);
+    const vehicle = new smartcar.Vehicle(vehicles[0], req.token);
+
+    vehicle.location().then(function(response) {
+        console.log(response);
+      });
+    
+}
+
+app.get('/onStartPark', executeStartParkActions, function(req,res,next){
+    
+});
+
+// demo logic
 
 // 1. Create an instance of Smartcar's client.
 const client = new smartcar.AuthClient({
@@ -15,9 +34,6 @@ const client = new smartcar.AuthClient({
   testMode: true
 });
 
-// 2. Create a new webserver with the Express framework.
-const app = express();
-
 // 3. Create a page with a 'Connect Car' button.
 app.get('/', function(req, res, next) {
   const authUrl = client.getAuthUrl({forcePrompt: true});
@@ -25,6 +41,10 @@ app.get('/', function(req, res, next) {
     <h1>Hello, World!</h1>
     <a href=${authUrl}>
       <button>Connect Car</button>
+    </a>
+    <h1>We Gonna Test This Program</h1>
+    <a href=http://localhost:8000/onStartPark>
+        <button>Park Me!</button>
     </a>
   `);
 });
@@ -36,24 +56,12 @@ app.get('/callback', function(req, res, next) {
   client.exchangeCode(code)
     .then(function(access) {
       // get all vehicles
+      // save info to db
       // Log the access token response
       console.log(JSON.stringify(access, null, 2));
-      // get accessToken string
-      var accessToken = JSON.stringify(access.accessToken);
-      console.log(accessToken);
 
-      // smartcar.getVehicleIds(accessToken)
-      //   .then(function(response) {
-      //     const vid = response.vehicles[0];
-      //     const vehicle = new smartcar.Vehicle(vid, accessToken);
-      //     return vehicle.location();
-      //   })
-      //   .then(function(response) {
-      //     console.log(response);
-      //   });
-      // save info to db
       // Respond with a success status to browser
-      res.send(accessToken);
+      res.json(access);
 
     });
 });
