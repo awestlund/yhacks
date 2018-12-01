@@ -42,6 +42,16 @@ exports.getAccessToken = (req, res, next)=>{
     });
 }
 exports.updateLocation = (req, res, next)=>{
+    // ist this right? how do we get the accesstoken?
+    smartcar.getVehicleIds(accessToken)
+        .then(function(response) {
+            const vid = response.vehicles[0];
+            const vehicle = new smartcar.Vehicle(vid, accessToken);
+            return vehicle.location();
+        })
+        .then(function(response) {
+            console.log(response);
+        });
     let q = Smartcar.update();
     q.exec((err, Smartcars)=>{
       if(err){
