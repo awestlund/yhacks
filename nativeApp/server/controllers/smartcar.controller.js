@@ -111,8 +111,9 @@ exports.unlockCarForDriver = async (req, res, next)=>{
 
     const result = await unlockCar(clientidOfUser);
     
-    console.log("unlockCAr4Driver;)",result);
+    console.log("unlockCarForDriver:",result);
 
+    // returns {} on sucess, returns 500 failure code if fail
     return res.send({result:result});
     }
     catch(err) {

@@ -46,6 +46,11 @@ export class ServerConnectionService {
     return this.http.get("http://localhost:8000/login");
   }
 
+  unlockVehicle(id)
+  {
+    return this.http.get("http://localhost:8000/unlockCarForDriver?clientid="+id);
+  }
+
   test()
   {
     return this.http.get("http://localhost:8000/test?name=julian");

@@ -43,6 +43,26 @@ export class MoverComponent implements OnInit {
     });
   }
 
+  public unlock()
+  {
+    let x = this.requestUnlock().subscribe(res => {
+      console.log(JSON.parse(res['_body']));
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  private requestUnlock()
+  {
+    return new Observable((observer) => {
+      this.server.unlockVehicle(this.clientReady).subscribe(resp => {
+        return observer.next(resp);
+      }, err => {
+        return observer.error(err);
+      });
+    })
+  }
+
   // Currently Implemented As A Database Query Only
   getVehicleInfo() {
     let x = this.requestVehicleInfo().subscribe(res => {
