@@ -21,6 +21,21 @@ export class ServerConnectionService {
     return this.http.get("http://localhost:8000/parkme?clientid="+id);
   }
 
+  getWaitingOwners()
+  {
+    return this.http.get("http://localhost:8000/readytodrive");
+  }
+
+  getVehicleInfo(id)
+  {
+    return this.http.get("http://localhost:8000/getVehicleInfo?clientid="+id);
+  }
+
+  getLocation(id)
+  {
+    return this.http.get("http://localhost:8000/getLocation?clientid="+id);
+  }
+
   locationRequest(id)
   {
     return this.http.get("http://localhost:8000/getLocation?clientid="+id);

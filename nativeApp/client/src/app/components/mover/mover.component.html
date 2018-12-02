@@ -1,8 +1,16 @@
 <mat-card>
     <mat-card-header>
-        <mat-card-title>Mover</mat-card-title>
+        <mat-card-title>Move Cars</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <!-- <p>{{example}}</p> -->
+        <button (click)="startCarSearch()" *ngIf="componentState=='awaitingStart'" (click)="startCarSearch()" mat-flat-button color="accent">Search for Cars</button>
+        <div *ngIf="componentState=='searchingForCars'">
+            Searching...
+        </div>
+        <div *ngIf="componentState=='driving'">
+            <p>CarFound:</p>
+            <p>CLI: {{clientReady}}</p>
+            <p>Location: Lat:{{location.lat}} Long:{{location.long}}</p>
+        </div>
     </mat-card-content>
 </mat-card>
