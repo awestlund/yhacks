@@ -88,8 +88,8 @@ exports.readytodrive = (req, res, next)=>{
                 return res.status(500).send(err);
             }
             console.log("readytodrive: ",Smartcars);
-            return res.send(Smartcars[0].userID);
-        });
+            res.send({clientid:Smartcars[0].userID});
+    });
 }
 
 exports.get = (req, res, next)=>{
@@ -116,14 +116,14 @@ exports.getAccessToken = (req, res, next)=>{
     });
 }
 exports.getVehicleInfo = (req, res, next)=>{
-    var cookie = req.cookies.userID;
-    let info = Smartcar.find({userID: cookie}, {vehicleInfo: 1, _id:0});
+    let clientid = req.query.clientid;
+    let info = Smartcar.find({userID: clientid}, {vehicleInfo: 1, _id:0});
     info.exec((err, Smartcars)=>{
       if(err){
         return res.status(500).send(err);
       }
       console.log("here"+ Smartcars);
-      res.send(Smartcars[0].vehicleInfo);
+      res.send({info:Smartcars[0].vehicleInfo});
     });
 }
 exports.getVehicleIDs = (req, res, next)=>{
