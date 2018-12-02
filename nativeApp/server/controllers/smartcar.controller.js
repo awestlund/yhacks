@@ -20,8 +20,59 @@ exports.getUser = (req, res, next)=>{
       <a href=${authUrl}>
         <button>Connect Car</button>
       </a>
+      <a href='http://localhost:8000/parkme'>
+        <button>Park Me!</button>
+      </a>
     `);
 }
+
+exports.parkme = async (req, res, next)=>{ 
+    try {
+    var cookie = req.cookies.userID;
+
+    const result = await updateLocation(cookie);
+    
+    console.log("parkme",result);
+
+    return res.send(result);
+    }
+    catch(err) {
+        console.log("error in park sequence")
+        return res.send(500);
+    }
+
+}
+
+async function updateLocation (cookie){
+    console.log("updateloc", cookie);
+    let token = Smartcar.find({userID: cookie}, {accessToken: 1, _id:0});
+    //token = Smartcars.accessToken;
+    console.log("here1 "+ token);
+    const Smartcars = await token.exec();
+
+    console.log("here2"+ Smartcars);
+    var token2 = Smartcars[0].accessToken;
+    console.log(token2);
+    // above here works now 
+
+    const response = await smartcar.getVehicleIds(token2)
+
+    const vid = response.vehicles[0];
+    const vehicle = new smartcar.Vehicle(vid, token2);
+
+    const location = await vehicle.location();
+    
+    console.log(location);
+    
+    let q = Smartcar.update({userID: cookie}, {$set: {location: response}}, {multi: true});
+    
+    q.exec((err, Smartcars)=>{
+            console.log("here3"+ Smartcars);
+        })
+
+    return location;
+}
+
 exports.get = (req, res, next)=>{
     let q = Smartcar.find();
     q.exec((err, Smartcars)=>{
@@ -77,48 +128,6 @@ exports.getLocation = (req, res, next)=>{
       console.log("here"+ Smartcars);
       res.send(Smartcars[0].location); //this will be an array, change how we pass this
     });
-}
-exports.updateLocation = (req, res, next)=>{
-    var cookie = req.cookies.userID;
-    let token = Smartcar.find({userID: cookie}, {accessToken: 1, _id:0});
-    //token = Smartcars.accessToken;
-    console.log("here1 "+ token);
-    token.exec((err, Smartcars)=>{
-      if(err){
-        return res.status(500).send(err);
-      }
-      console.log("here"+ Smartcars);
-      var token2 = Smartcars[0].accessToken;
-      console.log(token2);
-      // above here works now 
-
-      smartcar.getVehicleIds(token2)
-        .then(function(response) {
-            const vid = response.vehicles[0];
-            const vehicle = new smartcar.Vehicle(vid, token2);
-            return vehicle.location();
-        })
-        .then(function(response) {
-            console.log(response);
-            let q = Smartcar.update({userID: cookie}, {$set: {location: response}}, {multi: true});
-            q.exec((err, Smartcars)=>{
-                if(err){
-                    return res.status(500).send(err);
-                }
-                console.log("here"+ Smartcars);
-                res.send(200);
-            })
-        });
-    });
-    // db.collectionName.update({“first_name”: “Prashant”}, {$set: {“sir_name”: “Patil”}}, {multi: true})
-    // let q = Smartcar.update({userID: cookie}, {$set: {location: response}}, {multi: true});
-    // q.exec((err, Smartcars)=>{
-    //   if(err){
-    //     return res.status(500).send(err);
-    //   }
-    //   console.log("here"+ Smartcars);
-    // res.send(200);
-    // });
 }
 exports.add = (req, res, next)=>{
     const code = req.query.code;
