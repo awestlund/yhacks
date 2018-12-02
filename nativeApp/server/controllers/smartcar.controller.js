@@ -92,6 +92,18 @@ exports.readytodrive = (req, res, next)=>{
         });
 }
 
+exports.getIfReadyToBeParked = (req, res, next)=>{
+    let clientid = req.query.clientid;
+    const isCliReadyToBeParked = Smartcar.find({userID: clientid}, {readyToBeParked: 1, _id:0});
+    isCliReadyToBeParked.exec((err, Smartcars)=>{
+        if(err){
+            return res.status(500).send(err);
+        }
+        console.log("getIfReadyToBeParked: ",Smartcars);
+        return res.send(Smartcars[0].readyToBeParked);
+    });
+}
+
 exports.get = (req, res, next)=>{
     let q = Smartcar.find();
     q.exec((err, Smartcars)=>{
