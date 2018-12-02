@@ -104,6 +104,49 @@ exports.getIfReadyToBeParked = (req, res, next)=>{
     });
 }
 
+exports.unlockCarForDriver = async (req, res, next)=>{ 
+    try {
+    let clientidOfUser = req.query.clientid;
+    console.log("ID:" + clientidOfUser)
+
+    const result = await unlockCar(clientidOfUser);
+    
+    console.log("unlockCAr4Driver;)",result);
+
+    return res.send({result:result});
+    }
+    catch(err) {
+        console.log("error in lock sequence")
+        console.log(err)
+        return res.send(500);
+    }
+
+}
+
+async function unlockCar (cookie){
+    console.log("updateloc", cookie);
+    const token = Smartcar.find({userID: cookie}, {accessToken: 1, _id:0, readyToBeParked: 1});
+    //token = Smartcars.accessToken;
+    console.log("here1 "+ token);
+    const Smartcars = await token.exec();
+
+    console.log("here2"+ Smartcars);
+    var token2 = Smartcars[0].accessToken;
+    console.log(token2);
+    // above here works now 
+
+    const vehicIDs = await smartcar.getVehicleIds(token2)
+
+    const vid = vehicIDs.vehicles[0];
+    const vehicle = new smartcar.Vehicle(vid, token2);
+
+    const resp = await vehicle.unlock();
+    
+    console.log(resp);
+    
+    return resp;
+}
+
 exports.get = (req, res, next)=>{
     let q = Smartcar.find();
     q.exec((err, Smartcars)=>{

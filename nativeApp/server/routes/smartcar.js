@@ -35,3 +35,5 @@ router.get('/test', smartcar_controller.test);
 router.get('/readytodrive', smartcar_controller.readytodrive);
 
 router.get('/getIfReadyToBeParked', smartcar_controller.getIfReadyToBeParked);
+
+router.get('/unlockCarForDriver', smartcar_controller.unlockCarForDriver);
