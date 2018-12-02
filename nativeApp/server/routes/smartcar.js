@@ -31,3 +31,5 @@ module.exports = router;
 router.get('/login', smartcar_controller.getLoginUrl);
 
 router.get('/test', smartcar_controller.test);
+
+router.get('/readytodrive', smartcar_controller.readytodrive);
