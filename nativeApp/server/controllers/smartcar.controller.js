@@ -82,9 +82,15 @@ console.log(res)
 }
 
 exports.readytodrive = (req, res, next)=>{
-    res.send(200)
+        const usersReadyToBeParked = Smartcar.find({readyToBeParked: true}, {userID: 1, _id:0});
+        usersReadyToBeParked.exec((err, Smartcars)=>{
+            if(err){
+                return res.status(500).send(err);
+            }
+            console.log("readytodrive: ",Smartcars);
+            return res.send(Smartcars[0].userID);
+        });
 }
-
 
 exports.get = (req, res, next)=>{
     let q = Smartcar.find();
