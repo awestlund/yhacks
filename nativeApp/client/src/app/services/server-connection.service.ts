@@ -16,16 +16,14 @@ export class ServerConnectionService {
     return url.searchParams.get("clientid");
   }
 
-  makeGetRequest(url: string, port: string, action: string, paramName?: string, paramValue?: string)
+  parkRequest(id)
   {
-    if(paramName && paramValue)
-    {
-      return "http://"+url+":"+port+"/"+action+"?"+paramName+"="+paramValue;
-    }
-    else
-    {
-      return "http://"+url+":"+port+"/"+action;
-    }
+    return this.http.get("http://localhost:8000/parkme?clientid="+id);
+  }
+
+  locationRequest(id)
+  {
+    return this.http.get("http://localhost:8000/getLocation?clientid="+id);
   }
 
   getLoginUrl()
@@ -35,7 +33,8 @@ export class ServerConnectionService {
 
   test()
   {
-    this.makeGetRequest("localhost", "8000", "test", "name", "julian")
     return this.http.get("http://localhost:8000/test?name=julian");
   }
+
+
 }

@@ -11,6 +11,7 @@ export class OwnerComponent implements OnInit {
   loginUrl;
   variable;
   clientid:string = this.server.clientid;
+  componentState:string = "awaitingRequest";
 
   constructor(private server: ServerConnectionService) {
     /*
@@ -21,7 +22,7 @@ export class OwnerComponent implements OnInit {
       console.log(err);
     });*/
 
-    this.variable = this.testLoginUrl().subscribe(res => {
+    this.variable = this.getLoginUrl().subscribe(res => {
       console.log(JSON.parse(res['_body']).url);
       this.loginUrl = JSON.parse(res['_body']).url;
     }, err => {
@@ -41,15 +42,53 @@ export class OwnerComponent implements OnInit {
   }
   */
 
-  testLoginUrl() {
+  getLoginUrl() {
     return new Observable((observer) => {
       this.server.getLoginUrl().subscribe(resp => {
         return observer.next(resp);
       }, err => {
         return observer.error(err);
       });
-  })
-}
+    })
+  }
+
+  public parkMe()
+  {
+    let x = this.requestPark().subscribe(res => {
+      console.log(JSON.parse(res['_body']));
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  public getLocation()
+  {
+    let x = this.requestLocation().subscribe(res => {
+      console.log(JSON.parse(res['_body']));
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  private requestLocation() {
+    return new Observable((observer) => {
+      this.server.locationRequest(this.clientid).subscribe(resp => {
+        return observer.next(resp);
+      }, err => {
+        return observer.error(err);
+      });
+    })
+  }
+
+  private requestPark() {
+    return new Observable((observer) => {
+      this.server.parkRequest(this.clientid).subscribe(resp => {
+        return observer.next(resp);
+      }, err => {
+        return observer.error(err);
+      });
+    })
+  }
 
   ngOnInit() {
   }

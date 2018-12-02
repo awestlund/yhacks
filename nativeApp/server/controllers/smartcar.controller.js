@@ -33,13 +33,14 @@ exports.getUser = (req, res, next)=>{
 
 exports.parkme = async (req, res, next)=>{ 
     try {
-    var cookie = req.cookies.userID;
+    let clientid = req.query.clientid;
+    console.log("ID:" + client)
 
-    const result = await updateLocation(cookie);
+    const result = await updateLocation(clientid);
     
     console.log("parkme",result);
 
-    return res.send(result);
+    return res.send({result:result});
     }
     catch(err) {
         console.log("error in park sequence")
@@ -124,13 +125,15 @@ exports.getVehicleIDs = (req, res, next)=>{
     });
 }
 exports.getLocation = (req, res, next)=>{
-    var cookie = req.cookies.userID;
-    let location = Smartcar.find({userID: cookie}, {Location: 1, _id:0});
+    let clientid = req.query.clientid;
+    console.log("CID:" + clientid)
+    let location = Smartcar.find({userID: clientid}, {location: 1, _id:0});
     location.exec((err, Smartcars)=>{
       if(err){
         return res.status(500).send(err);
       }
       console.log("here"+ Smartcars);
+      console.log(Smartcars[0].location)
       res.send(Smartcars[0].location); //this will be an array, change how we pass this
     });
 }
@@ -170,10 +173,10 @@ exports.add = (req, res, next)=>{
                         console.log("updated accessToken"+ Smartcars);
                         res.send(`
                         <head>
-                            <meta http-equiv="refresh" content="0; url=http://localhost:4200/owner?clientid=${userID}'" />
+                            <meta http-equiv="refresh" content="0; url=http://localhost:4200/owner?clientid=${userID}" />
                         </head>
                         <p>Please wait to be redirected. If not, use the button below to return to the client</p>
-                        <a href='http://localhost:4200/owner?clientid=${userID}'>
+                        <a href='http://localhost:4200/owner?clientid=${userID}>
                             <button>Return to Client</button>
                         </a>
                         `);
@@ -186,10 +189,10 @@ exports.add = (req, res, next)=>{
                         if(err) return res.status(500).send(err);
                         res.send(`
                         <head>
-                            <meta http-equiv="refresh" content="0; url=http://localhost:4200/owner?clientid=${userID}'" />
+                            <meta http-equiv="refresh" content="0; url=http://localhost:4200/owner?clientid=${userID}" />
                         </head>
                         <p>Please wait to be redirected. If not, use the button below to return to the client</p>
-                        <a href='http://localhost:4200/owner?clientid=${userID}'>
+                        <a href='http://localhost:4200/owner?clientid=${userID}>
                             <button>Return to Client</button>
                         </a>
                         `);
