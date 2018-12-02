@@ -10,8 +10,6 @@ router.get('/User', smartcar_controller.getUser);
 //prints out all of the db entries
 router.get('/db', smartcar_controller.get);
 
-router.get('/test', smartcar_controller.test);
-
 //saves a new user into the database
 router.get('/callback', smartcar_controller.add);
 
@@ -30,3 +28,7 @@ router.get('/getVehicleInfo', smartcar_controller.getVehicleInfo);
 // returns array of ids EX: ["67dfd165-b4ba-402e-8e63-679abd75aca0","707968d2-ed02-4c8f-9f8d-f8da9fddce03","f37f9db9-072c-4302-8e27-f730f23291ec"]
 router.get('/getVehicleIDs', smartcar_controller.getVehicleIDs);
 module.exports = router;
+
+router.get('/login', smartcar_controller.getLoginUrl);
+
+router.get('/test', smartcar_controller.test);

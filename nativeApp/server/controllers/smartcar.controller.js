@@ -13,6 +13,11 @@ const client = new smartcar.AuthClient({
     testMode: true
 });
 
+exports.getLoginUrl = (req, res, next)=>{
+    const authUrl = client.getAuthUrl({forcePrompt: true});
+    res.send({url:authUrl});
+}
+
 exports.getUser = (req, res, next)=>{
     const authUrl = client.getAuthUrl({forcePrompt: true});
     res.send(`
