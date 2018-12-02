@@ -1,0 +1,16 @@
+<mat-card *ngIf="page=='home'">
+    <mat-card-header>
+        <mat-card-title>Welcome</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <button (click)="page='owner'" mat-flat-button color="primary">
+            I Need My Car Moved
+        </button>
+        <button (click)="page='mover'" mat-flat-button color="accent">
+            I Want to Move Cars
+        </button>
+        <!-- <p>{{example}}</p> -->
+    </mat-card-content>
+</mat-card>
+<app-owner *ngIf="page=='owner'">Loading...</app-owner>
+<app-mover *ngIf="page=='mover'">Loading...</app-mover>
