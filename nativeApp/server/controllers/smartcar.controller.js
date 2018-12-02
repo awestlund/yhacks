@@ -169,8 +169,11 @@ exports.add = (req, res, next)=>{
                         }
                         console.log("updated accessToken"+ Smartcars);
                         res.send(`
-                        updated accessToken
-                        <a href='http://localhost:4200/owner/${userID}'>
+                        <head>
+                            <meta http-equiv="refresh" content="0; url=http://localhost:4200/owner?clientid=${userID}'" />
+                        </head>
+                        <p>Please wait to be redirected. If not, use the button below to return to the client</p>
+                        <a href='http://localhost:4200/owner?clientid=${userID}'>
                             <button>Return to Client</button>
                         </a>
                         `);
@@ -182,7 +185,10 @@ exports.add = (req, res, next)=>{
                     newSmartcar.save(err=>{
                         if(err) return res.status(500).send(err);
                         res.send(`
-                        <p>nice job kiddo</p>
+                        <head>
+                            <meta http-equiv="refresh" content="0; url=http://localhost:4200/owner?clientid=${userID}'" />
+                        </head>
+                        <p>Please wait to be redirected. If not, use the button below to return to the client</p>
                         <a href='http://localhost:4200/owner?clientid=${userID}'>
                             <button>Return to Client</button>
                         </a>
