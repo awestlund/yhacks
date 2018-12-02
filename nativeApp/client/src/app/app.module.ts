@@ -7,6 +7,11 @@ import { MatCardModule, MatButtonModule, MatButton } from "@angular/material";
 import { AppComponent } from './app.component';
 import { OwnerComponent } from './components/owner/owner.component';
 import { MoverComponent } from './components/mover/mover.component';
+import { RouterModule, Routes } from '@angular/router';
+
+const appRoutes: Routes = [
+  { path: 'owner', component: AppComponent }
+];
 
 @NgModule({
   declarations: [
@@ -19,7 +24,10 @@ import { MoverComponent } from './components/mover/mover.component';
     HttpClientModule,
     HttpModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    RouterModule.forRoot(
+      appRoutes
+    )
   ],
   providers: [],
   bootstrap: [AppComponent]

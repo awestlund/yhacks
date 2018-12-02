@@ -168,7 +168,12 @@ exports.add = (req, res, next)=>{
                             return res.status(500).send(err);
                         }
                         console.log("updated accessToken"+ Smartcars);
-                        res.send("updated accessToken");
+                        res.send(`
+                        updated accessToken
+                        <a href='http://localhost:4200/owner/${userID}'>
+                            <button>Return to Client</button>
+                        </a>
+                        `);
                     })
                 }
                 else{
@@ -176,7 +181,12 @@ exports.add = (req, res, next)=>{
                     let newSmartcar = new Smartcar(newuser);
                     newSmartcar.save(err=>{
                         if(err) return res.status(500).send(err);
-                        res.send('nice job kiddo');
+                        res.send(`
+                        <p>nice job kiddo</p>
+                        <a href='http://localhost:4200/owner?clientid=${userID}'>
+                            <button>Return to Client</button>
+                        </a>
+                        `);
     
                     })
                 }

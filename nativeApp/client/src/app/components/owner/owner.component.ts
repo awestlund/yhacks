@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 export class OwnerComponent implements OnInit {
   loginUrl;
   variable;
+  clientid:string = this.server.clientid;
 
   constructor(private server: ServerConnectionService) {
     /*
