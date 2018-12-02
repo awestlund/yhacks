@@ -19,8 +19,7 @@ router.get('/getToken', smartcar_controller.getAccessToken);
 //return location EX: 
 router.get('/getLocation', smartcar_controller.getLocation);
 
-//update location
-router.get('/updateLocation', smartcar_controller.updateLocation);
+router.get('/parkme',smartcar_controller.parkme);
 
 //returns vehicle info EX: 
 router.get('/getVehicleInfo', smartcar_controller.getVehicleInfo);
