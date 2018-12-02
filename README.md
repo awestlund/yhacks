@@ -1,4 +1,4 @@
-# YHack Project
+# YHack Project!
 ## How to Start
 ### Node Server
 The [NodeJS](https://nodejs.org/) server handles all interactions with [SmartCar](https://smartcar.com) and the [Mongo Database](https://www.mongodb.com). This server could be deployed, but is currently configured for local hosting. 
