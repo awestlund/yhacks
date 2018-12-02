@@ -13,7 +13,11 @@
     <mat-card-title>Owner Logged In</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <button *ngIf="componentState=='awaitingRequest'" (click)="getLocation()" mat-flat-button color="accent">Request A Park</button>
     <button *ngIf="componentState=='awaitingConfirm'" (click)="parkMe()" mat-flat-button color="accent">Confirm</button>
+    <div *ngIf="componentState=='awaitingDriver'">
+      <p>Waiting for Driver to Move Car at:<p>
+      <p>Lat: {{location.latitude}}</p>
+      <p>Lon: {{location.longitude}}</p>
+    </div>
   </mat-card-content>
 </mat-card>

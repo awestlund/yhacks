@@ -11,7 +11,8 @@ export class OwnerComponent implements OnInit {
   loginUrl;
   variable;
   clientid:string = this.server.clientid;
-  componentState:string = "awaitingRequest";
+  componentState:string = "awaitingConfirm";
+  location;
 
   constructor(private server: ServerConnectionService) {
     /*
@@ -55,29 +56,12 @@ export class OwnerComponent implements OnInit {
   public parkMe()
   {
     let x = this.requestPark().subscribe(res => {
-      console.log(JSON.parse(res['_body']));
+      console.log(JSON.parse(res['_body']).result.data);
+      this.location = JSON.parse(res['_body']).result.data;
+      this.componentState = "awaitingDriver";
     }, err => {
       console.log(err);
     });
-  }
-
-  public getLocation()
-  {
-    let x = this.requestLocation().subscribe(res => {
-      console.log(JSON.parse(res['_body']));
-    }, err => {
-      console.log(err);
-    });
-  }
-
-  private requestLocation() {
-    return new Observable((observer) => {
-      this.server.locationRequest(this.clientid).subscribe(resp => {
-        return observer.next(resp);
-      }, err => {
-        return observer.error(err);
-      });
-    })
   }
 
   private requestPark() {
