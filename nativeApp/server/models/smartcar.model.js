@@ -6,8 +6,9 @@ let SmartcarSchema = new Schema({
     userID: {type: String, require: true},
     accessToken: {type: String, require: true},
     vehicleIDs: {type: [String]},
-    loaction: {type: [String]},
+    location: {type: Object},
     vehicleInfo: {type: [String]},
+    readyToBeParked: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('Smartcar', SmartcarSchema);

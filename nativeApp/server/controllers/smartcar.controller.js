@@ -40,9 +40,11 @@ exports.parkme = async (req, res, next)=>{
     console.log("parkme",result);
 
     return res.send(result);
+
     }
     catch(err) {
         console.log("error in park sequence")
+        console.log(err)
         return res.send(500);
     }
 
@@ -50,7 +52,7 @@ exports.parkme = async (req, res, next)=>{
 
 async function updateLocation (cookie){
     console.log("updateloc", cookie);
-    let token = Smartcar.find({userID: cookie}, {accessToken: 1, _id:0});
+    const token = Smartcar.find({userID: cookie}, {accessToken: 1, _id:0, readyToBeParked: 1});
     //token = Smartcars.accessToken;
     console.log("here1 "+ token);
     const Smartcars = await token.exec();
@@ -65,18 +67,24 @@ async function updateLocation (cookie){
     const vid = response.vehicles[0];
     const vehicle = new smartcar.Vehicle(vid, token2);
 
-    const location = await vehicle.location();
+    const loc = await vehicle.location();
     
-    console.log(location);
+    console.log(loc);
+    console.log(loc);
+    console.log(loc);
+    console.log(loc);
     
-    let q = Smartcar.update({userID: cookie}, {$set: {location: response}}, {multi: true});
+    const q = Smartcar.update({userID: cookie}, {$set: {location: { lat: loc.data.latitude, long: loc.data.longitude }, readyToBeParked: true}}, {multi: true});
     
-    q.exec((err, Smartcars)=>{
-            console.log("here3"+ Smartcars);
-        })
-
-    return location;
+    const res = await q.exec()
+console.log(res)
+    return loc;
 }
+
+exports.readytodrive = (req, res, next)=>{
+    res.send(200)
+}
+
 
 exports.get = (req, res, next)=>{
     let q = Smartcar.find();
