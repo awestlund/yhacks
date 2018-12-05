@@ -8,9 +8,15 @@ var indexRouter = require('./routes/index');
 var scoresRouter = require('./routes/smartcar');
 
 const mongoose = require('mongoose');
-const mongo_url = 'mongodb://usethistoedit:editme123@ds123444.mlab.com:23444/yhack2018_smartcar';
+const mongo_url = 'mongodb://ds123444.mlab.com:23444/yhack2018_smartcar';
 // const mongo_url = 'mongodb://localhost:27017/example';
-mongoose.connect(mongo_url, {useNewUrlParser:true});
+mongoose.connect(mongo_url, {
+  auth: {
+    user: 'usethistoedit',
+    password: 'sm@artc@ar123'
+  },
+  useNewUrlParser: true
+});
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('err', console.log.bind(console, 'mongo connection error'));
