@@ -10,7 +10,7 @@ const client = new smartcar.AuthClient({
     clientSecret: CLIENT_SECRET,
     redirectUri: 'http://localhost:8000/callback',
     scope: ['read_vehicle_info', 'read_location', 'control_security'],
-    testMode: true
+    testMode: true,
 });
 
 exports.getLoginUrl = (req, res, next)=>{
