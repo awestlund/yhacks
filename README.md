@@ -15,8 +15,6 @@ Please note that this is an unfinished product created during a 32 hour Hackatho
 ### MongoDB
 [MongoDB](https://www.mongodb.com) stores persistant server-side data necessary for the application to perform in a multi-user environment. Interactions with the database are managed by the Node Server. Cloud services such as [MLab](https://mlab.com), [Google Cloud Platform](https://cloud.google.com), or [Amazon Web Services](https://aws.amazon.com) may be used to host the database, however, for demonstration purposes, [install MongoDB locally](https://docs.mongodb.com/manual/installation/).
 
-Note, by default, Easy Park will attempt to connect to an MLab development database. To test against a local database, update the URL in [app.js](./src/server/app.js).
-
 #### MongoDB on MacOS _Using [Homebrew](https://brew.sh)_
 - Install MongoDB for Homebrew
 ```
@@ -26,10 +24,12 @@ brew install mongodb
 ```
 brew services start mongodb
 ```
-- Stop MongoDB
-```
-brew services stop mongodb
-```
+
+At this point, MongoDB is running locally as a background service. To access the mongo console, run `mongo` in any directory. Then, perform the following oporations within the MongoDB console:
+- Run `use example` to create the database "example".
+- Run `db.createCollection('smartcars')` to create the "smarcars" collection within the "example" database.
+
+Note, the database URL is set by the `mongo_url` constant within the [app.js](./src/server/app.js) file. By default, this will connect to localhost on port 27017.
 
 ### Node Server
 The [NodeJS](https://nodejs.org/) server handles all interactions with [SmartCar](https://smartcar.com) and the [Mongo Database](https://www.mongodb.com). This server could be deployed, but is currently configured for local hosting. 
